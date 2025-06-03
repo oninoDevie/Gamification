@@ -1,785 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CH Tennis Academy - Gamification</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --neon-green: #00ff41;
-            --dark-blue: #0a1829;
-            --white: #ffffff;
-            --light-blue: #1e3a8a;
-            --gray: #6b7280;
-            --success: #10b981;
-            --warning: #f59e0b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CH Tennis Academy – Gamification & Tracker</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* ---------- COLOR PALETTE ---------- */
+    :root {
+      --neon-green: #00ff41;
+      --dark-blue: #0a1829;
+      --white: #ffffff;
+      --light-blue: #1e3a8a;
+      --gray: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --pink: #ec4899;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* ---------- GLOBAL RESET ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: var(--white);
-            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
-            overflow-x: hidden;
-        }
+    body {
+      font-family: "Arial", sans-serif;
+      line-height: 1.6;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
 
-        /* Header Styles */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 24, 41, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
+    /* ---------- HEADER ---------- */
+    .header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 24, 41, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+    }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--neon-green);
-            text-decoration: none;
-        }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--neon-green);
+      text-decoration: none;
+    }
 
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
 
-        .nav-menu a {
-            color: var(--white);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 500;
-        }
+    .nav-menu a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 500;
+    }
 
-        .nav-menu a:hover {
-            color: var(--neon-green);
-        }
+    .nav-menu a:hover { color: var(--neon-green); }
 
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 6rem 2rem 2rem;
-            position: relative;
-            overflow: hidden;
-        }
+    /* ---------- HERO ---------- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .hero-content {
-            max-width: 800px;
-            z-index: 2;
-        }
+    .hero-content { max-width: 800px; z-index: 2; }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--neon-green), var(--white));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, var(--neon-green), var(--white));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
+    .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9); }
 
-        .cta-button {
-            background: linear-gradient(45deg, var(--neon-green), #00cc33);
-            color: var(--dark-blue);
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
+    .cta-button {
+      background: linear-gradient(45deg, var(--neon-green), #00cc33);
+      color: var(--dark-blue);
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,255,65,0.3); }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 255, 65, 0.3);
-        }
+    /* ---------- ACEY MASCOT ---------- */
+    .acey-container { position: absolute; right: 10%; top: 50%; transform: translateY(-50%); z-index: 1; }
+    .acey { width: 200px; height: 200px; animation: bounce 2s infinite; cursor: pointer; transition: transform 0.3s ease; }
+    .acey:hover { transform: scale(1.1); }
+    @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0);}40%{transform:translateY(-20px);}60%{transform:translateY(-10px);} }
 
-        /* Acey Mascot */
-        .acey-container {
-            position: absolute;
-            right: 10%;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
-        }
+    /* ---------- GENERIC SECTION ---------- */
+    .section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--neon-green); }
 
-        .acey {
-            width: 200px;
-            height: 200px;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
+    /* ---------- LEAGUE ---------- */
+    .league-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: 2rem; margin-top: 2rem; }
+    .league-card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 2rem; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease; }
+    .league-card:hover { transform: translateY(-5px); }
+    .league-icon { font-size: 3rem; color: var(--neon-green); margin-bottom: 1rem; }
 
-        .acey:hover {
-            transform: scale(1.1);
-        }
+    /* ---------- CHALLENGES ---------- */
+    .challenges-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .challenge-card { background: linear-gradient(135deg,rgba(0,255,65,0.1),rgba(30,58,138,0.1)); border-radius: 10px; padding: 1.5rem; border: 2px solid transparent; background-clip: padding-box; transition: all 0.3s ease; cursor: pointer; }
+    .challenge-card:hover { border-color: var(--neon-green); transform: scale(1.05); }
+    .challenge-title { color: var(--neon-green); font-size: 1.2rem; margin-bottom: .5rem; }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
+    .challenge-progress { background: rgba(255,255,255,0.2); border-radius:10px; height:8px; margin:1rem 0; overflow:hidden; }
+    .progress-bar { height:100%; background: linear-gradient(90deg,var(--neon-green),#00cc33); border-radius:10px; transition: width .3s ease; }
 
-        /* Section Styles */
-        .section {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    /* ---------- PROGRESS STATS ---------- */
+    .progress-container { background: rgba(255,255,255,0.1); border-radius:20px; padding:2rem; backdrop-filter: blur(10px); margin-top:2rem; }
+    .stats-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:2rem; margin-top:2rem; }
+    .stat-card { text-align:center; padding:1.5rem; background: rgba(0,255,65,0.1); border-radius:15px; }
+    .stat-number { font-size:2.5rem; font-weight:bold; color:var(--neon-green); display:block; }
+    .stat-label { color: rgba(255,255,255,0.8); margin-top:.5rem; }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--neon-green);
-        }
+    /* ---------- TRACKER (NEW) ---------- */
+    .tracker-container { max-width:960px; margin:0 auto; background:rgba(255,255,255,0.05); padding:2rem; border-radius:20px; backdrop-filter: blur(10px); }
+    .objective-card { background:rgba(255,255,255,0.1); padding:1rem; border-radius:15px; margin-bottom:1rem; border-left:5px solid var(--neon-green); }
+    .objective-title { font-size:1.2rem; margin-bottom:.5rem; font-weight:bold; }
+    .objective-details { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .progress-bar.small { height:8px; border-radius:10px; background:var(--gray); overflow:hidden; margin-top:.5rem; }
+    .progress.small { height:100%; background:var(--neon-green); width:0%; transition: width .3s ease; }
+    select, button { padding:.4rem .6rem; border-radius:8px; border:none; font-weight:bold; }
+    button { background:var(--pink); color:#fff; cursor:pointer; }
+    .form-row { display:flex; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
 
-        /* Tennis League Section */
-        .league-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
+    /* ---------- FOOTER ---------- */
+    .footer { background: var(--dark-blue); text-align:center; padding:2rem; margin-top:4rem; }
 
-        .league-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-        }
+    /* ---------- MOTIVATIONAL MESSAGE ---------- */
+    .acey-message { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:linear-gradient(135deg,var(--neon-green),#00cc33); color:var(--dark-blue); padding:2rem; border-radius:20px; font-size:1.2rem; font-weight:bold; text-align:center; z-index:10000; display:none; max-width:400px; box-shadow:0 20px 40px rgba(0,0,0,0.3); }
+    .message-close { position:absolute; top:10px; right:15px; background:none; border:none; font-size:1.5rem; color:var(--dark-blue); cursor:pointer; }
 
-        .league-card:hover {
-            transform: translateY(-5px);
-        }
+    /* ---------- RESPONSIVE ---------- */
+    @media(max-width:768px){
+      .nav-menu { display:none; position:absolute; top:100%; left:0; width:100%; background:var(--dark-blue); flex-direction:column; padding:1rem; gap:1rem; }
+      .nav-menu.active { display:flex; }
+      .mobile-menu-btn { display:block; }
+      .hero h1 { font-size:2.5rem; }
+      .acey-container { position:static; transform:none; margin:2rem auto; }
+      .hero { flex-direction:column; }
+      .acey { width:150px; height:150px; }
+      .section-title { font-size:2rem; }
+      .nav-container { padding:0 1rem; }
+    }
 
-        .league-icon {
-            font-size: 3rem;
-            color: var(--neon-green);
-            margin-bottom: 1rem;
-        }
-
-        /* Challenges Section */
-        .challenges-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .challenge-card {
-            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(30, 58, 138, 0.1));
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .challenge-card:hover {
-            border-color: var(--neon-green);
-            transform: scale(1.05);
-        }
-
-        .challenge-title {
-            color: var(--neon-green);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .challenge-progress {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            height: 8px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-green), #00cc33);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        /* Progress Tracker */
-        .progress-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            margin-top: 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 1.5rem;
-            background: rgba(0, 255, 65, 0.1);
-            border-radius: 15px;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--neon-green);
-            display: block;
-        }
-
-        .stat-label {
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 0.5rem;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--dark-blue);
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-
-        /* Motivational Message */
-        .acey-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--neon-green), #00cc33);
-            color: var(--dark-blue);
-            padding: 2rem;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            z-index: 10000;
-            display: none;
-            max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .message-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--dark-blue);
-            cursor: pointer;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--dark-blue);
-                flex-direction: column;
-                padding: 1rem;
-                gap: 1rem;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .acey-container {
-                position: static;
-                transform: none;
-                margin: 2rem auto;
-            }
-
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .acey {
-                width: 150px;
-                height: 150px;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .nav-container {
-                padding: 0 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .section {
-                padding: 2rem 1rem;
-            }
-
-            .league-grid,
-            .challenges-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    @media(max-width:480px){
+      .hero h1 { font-size:2rem; }
+      .section { padding:2rem 1rem; }
+      .league-grid, .challenges-grid { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="nav-container">
-            <a href="#" class="logo">CH Tennis Academy</a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#league">Tennis League</a></li>
-                <li><a href="#challenges">Challenges</a></li>
-                <li><a href="#progress">Progress</a></li>
-            </ul>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
-    </header>
+  <!-- ---------------- HEADER ---------------- -->
+  <header class="header">
+    <nav class="nav-container">
+      <a href="#" class="logo">CH Tennis Academy</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#league">Tennis League</a></li>
+        <li><a href="#challenges">Challenges</a></li>
+        <li><a href="#progress">Progress</a></li>
+        <li><a href="#tracker">Tracker</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+    </nav>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Welcome to CH Tennis Academy</h1>
-            <p>Level up your tennis game with Acey! Join our gamified tennis experience and become the champion you were meant to be.</p>
-            <button class="cta-button" id="startBtn">Start Your Journey</button>
-        </div>
-        <div class="acey-container">
-            <svg class="acey" id="aceyMascot" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <!-- Acey the Tennis Ball Character -->
-                <!-- Body (Tennis Ball) -->
-                <circle cx="100" cy="120" r="60" fill="#00ff41" stroke="#ffffff" stroke-width="3"/>
-                <!-- Tennis Ball Lines -->
-                <path d="M 50 120 Q 100 80 150 120" stroke="#ffffff" stroke-width="3" fill="none"/>
-                <path d="M 50 120 Q 100 160 150 120" stroke="#ffffff" stroke-width="3" fill="none"/>
-                
-                <!-- Eyes -->
-                <circle cx="85" cy="105" r="8" fill="#0a1829"/>
-                <circle cx="115" cy="105" r="8" fill="#0a1829"/>
-                <circle cx="87" cy="103" r="3" fill="#ffffff"/>
-                <circle cx="117" cy="103" r="3" fill="#ffffff"/>
-                
-                <!-- Smile -->
-                <path d="M 80 130 Q 100 145 120 130" stroke="#0a1829" stroke-width="3" fill="none" stroke-linecap="round"/>
-                
-                <!-- Tennis Racket -->
-                <g transform="translate(160, 80) rotate(30)">
-                    <!-- Handle -->
-                    <rect x="-3" y="20" width="6" height="40" fill="#8B4513" rx="3"/>
-                    <!-- Head Frame -->
-                    <ellipse cx="0" cy="0" rx="15" ry="20" fill="none" stroke="#8B4513" stroke-width="3"/>
-                    <!-- Strings -->
-                    <line x1="-10" y1="-15" x2="10" y2="15" stroke="#ffffff" stroke-width="1"/>
-                    <line x1="-10" y1="0" x2="10" y2="0" stroke="#ffffff" stroke-width="1"/>
-                    <line x1="-10" y1="15" x2="10" y2="-15" stroke="#ffffff" stroke-width="1"/>
-                    <line x1="0" y1="-20" x2="0" y2="20" stroke="#ffffff" stroke-width="1"/>
-                </g>
-                
-                <!-- Arms -->
-                <circle cx="45" cy="110" r="12" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
-                <circle cx="155" cy="110" r="12" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
-                
-                <!-- Legs -->
-                <ellipse cx="85" cy="175" rx="10" ry="15" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
-                <ellipse cx="115" cy="175" rx="10" ry="15" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
-                
-                <!-- Tennis Shoes -->
-                <ellipse cx="85" cy="185" rx="12" ry="6" fill="#ffffff"/>
-                <ellipse cx="115" cy="185" rx="12" ry="6" fill="#ffffff"/>
-            </svg>
-        </div>
-    </section>
-
-    <!-- Tennis League Section -->
-    <section class="section" id="league">
-        <h2 class="section-title">Tennis League</h2>
-        <div class="league-grid">
-            <div class="league-card">
-                <i class="fas fa-trophy league-icon"></i>
-                <h3>Bronze League</h3>
-                <p>Start your journey here! Perfect for beginners looking to learn the basics.</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 75%"></div>
-                </div>
-                <p>Progress: 75%</p>
-            </div>
-            <div class="league-card">
-                <i class="fas fa-medal league-icon"></i>
-                <h3>Silver League</h3>
-                <p>Intermediate level challenges await! Improve your technique and strategy.</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 45%"></div>
-                </div>
-                <p>Progress: 45%</p>
-            </div>
-            <div class="league-card">
-                <i class="fas fa-crown league-icon"></i>
-                <h3>Gold League</h3>
-                <p>Elite level competition! Master advanced techniques and become a champion.</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 20%"></div>
-                </div>
-                <p>Progress: 20%</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Acey Challenges Section -->
-    <section class="section" id="challenges">
-        <h2 class="section-title">Acey Challenges</h2>
-        <div class="challenges-grid">
-            <div class="challenge-card" onclick="completeChallenge(this, 'serve')">
-                <h3 class="challenge-title">Perfect Serve</h3>
-                <p>Land 10 serves in the service box</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 60%"></div>
-                </div>
-                <p>6/10 completed</p>
-            </div>
-            <div class="challenge-card" onclick="completeChallenge(this, 'rally')">
-                <h3 class="challenge-title">Rally Master</h3>
-                <p>Maintain a 20-shot rally</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 85%"></div>
-                </div>
-                <p>17/20 completed</p>
-            </div>
-            <div class="challenge-card" onclick="completeChallenge(this, 'target')">
-                <h3 class="challenge-title">Target Practice</h3>
-                <p>Hit 5 corner targets in a row</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 40%"></div>
-                </div>
-                <p>2/5 completed</p>
-            </div>
-            <div class="challenge-card" onclick="completeChallenge(this, 'endurance')">
-                <h3 class="challenge-title">Endurance Test</h3>
-                <p>Play for 30 minutes straight</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar" style="width: 90%"></div>
-                </div>
-                <p>27/30 minutes</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Progress Tracker Section -->
-    <section class="section" id="progress">
-        <h2 class="section-title">Progress Tracker</h2>
-        <div class="progress-container">
-            <h3 style="text-align: center; margin-bottom: 1rem;">Your Tennis Journey</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number" id="gamesPlayed">127</span>
-                    <div class="stat-label">Games Played</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="winRate">73%</span>
-                    <div class="stat-label">Win Rate</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="skillLevel">8.5</span>
-                    <div class="stat-label">Skill Level</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="hoursPlayed">89</span>
-                    <div class="stat-label">Hours Played</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2024 CH Tennis Academy. All rights reserved. Powered by Acey!</p>
-    </footer>
-
-    <!-- Acey's Motivational Message -->
-    <div class="acey-message" id="aceyMessage">
-        <button class="message-close" onclick="closeMessage()">&times;</button>
-        <div id="messageText"></div>
+  <!-- ---------------- HERO ---------------- -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Welcome to CH Tennis Academy</h1>
+      <p>Level up your tennis game with Acey! Join our gamified tennis experience and become the champion you were meant to be.</p>
+      <button class="cta-button" id="startBtn">Start Your Journey</button>
     </div>
+    <div class="acey-container">
+      <!-- Mascot SVG  -->
+      <svg class="acey" id="aceyMascot" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="120" r="60" fill="#00ff41" stroke="#ffffff" stroke-width="3"/>
+        <path d="M50 120 Q100 80 150 120" stroke="#ffffff" stroke-width="3" fill="none"/>
+        <path d="M50 120 Q100 160 150 120" stroke="#ffffff" stroke-width="3" fill="none"/>
+        <circle cx="85" cy="105" r="8" fill="#0a1829"/>
+        <circle cx="115" cy="105" r="8" fill="#0a1829"/>
+        <circle cx="87" cy="103" r="3" fill="#ffffff"/>
+        <circle cx="117" cy="103" r="3" fill="#ffffff"/>
+        <path d="M80 130 Q100 145 120 130" stroke="#0a1829" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <g transform="translate(160,80) rotate(30)">
+          <rect x="-3" y="20" width="6" height="40" fill="#8B4513" rx="3"/>
+          <ellipse cx="0" cy="0" rx="15" ry="20" fill="none" stroke="#8B4513" stroke-width="3"/>
+          <line x1="-10" y1="-15" x2="10" y2="15" stroke="#ffffff" stroke-width="1"/>
+          <line x1="-10" y1="0" x2="10" y2="0" stroke="#ffffff" stroke-width="1"/>
+          <line x1="-10" y1="15" x2="10" y2="-15" stroke="#ffffff" stroke-width="1"/>
+          <line x1="0" y1="-20" x2="0" y2="20" stroke="#ffffff" stroke-width="1"/>
+        </g>
+        <circle cx="45" cy="110" r="12" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
+        <circle cx="155" cy="110" r="12" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
+        <ellipse cx="85" cy="175" rx="10" ry="15" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
+        <ellipse cx="115" cy="175" rx="10" ry="15" fill="#00ff41" stroke="#ffffff" stroke-width="2"/>
+        <ellipse cx="85" cy="185" rx="12" ry="6" fill="#ffffff"/>
+        <ellipse cx="115" cy="185" rx="12" ry="6" fill="#ffffff"/>
+      </svg>
+    </div>
+  </section>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navMenu = document.getElementById('navMenu');
+  <!-- ---------------- LEAGUE ---------------- -->
+  <section class="section" id="league">
+    <h2 class="section-title">Tennis League</h2>
+    <div class="league-grid">
+      <div class="league-card"><i class="fas fa-trophy league-icon"></i><h3>Bronze League</h3><p>Start your journey here! Perfect for beginners looking to learn the basics.</p><div class="challenge-progress"><div class="progress-bar" style="width:75%"></div></div><p>Progress: 75%</p></div>
+      <div class="league-card"><i class="fas fa-medal league-icon"></i><h3>Silver League</h3><p>Intermediate level challenges await! Improve your technique and strategy.</p><div class="challenge-progress"><div class="progress-bar" style="width:45%"></div></div><p>Progress: 45%</p></div>
+      <div class="league-card"><i class="fas fa-crown league-icon"></i><h3>Gold League</h3><p>Elite level competition! Master advanced techniques and become a champion.</p><div class="challenge-progress"><div class="progress-bar" style="width:20%"></div></div><p>Progress: 20%</p></div>
+    </div>
+  </section>
 
-        mobileMenuBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
+  <!-- ---------------- CHALLENGES ---------------- -->
+  <section class="section" id="challenges">
+    <h2 class="section-title">Acey Challenges</h2>
+    <div class="challenges-grid">
+      <div class="challenge-card" onclick="completeChallenge(this,'serve')"><h3 class="challenge-title">Perfect Serve</h3><p>Land 10 serves in the service box</p><div class="challenge-progress"><div class="progress-bar" style="width:60%"></div></div><p>6/10 completed</p></div>
+      <div class="challenge-card" onclick="completeChallenge(this,'rally')"><h3 class="challenge-title">Rally Master</h3><p>Maintain a 20-shot rally</p><div class="challenge-progress"><div class="progress-bar" style="width:85%"></div></div><p>17/20 completed</p></div>
+      <div class="challenge-card" onclick="completeChallenge(this,'target')"><h3 class="challenge-title">Target Practice</h3><p>Hit 5 corner targets in a row</p><div class="challenge-progress"><div class="progress-bar" style="width:40%"></div></div><p>2/5 completed</p></div>
+      <div class="challenge-card" onclick="completeChallenge(this,'endurance')"><h3 class="challenge-title">Endurance Test</h3><p>Play for 30 minutes straight</p><div class="challenge-progress"><div class="progress-bar" style="width:90%"></div></div><p>27/30 minutes</p></div>
+    </div>
+  </section>
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                // Close mobile menu after clicking
-                navMenu.classList.remove('active');
-            });
-        });
+  <!-- ---------------- PROGRESS TRACKER (STATS) ---------------- -->
+  <section class="section" id="progress">
+    <h2 class="section-title">Progress Tracker</h2>
+    <div class="progress-container">
+      <h3 style="text-align:center;margin-bottom:1rem;">Your Tennis Journey</h3>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-number" id="gamesPlayed">127</span><div class="stat-label">Games Played</div></div>
+        <div class="stat-card"><span class="stat-number" id="winRate">73%</span><div class="stat-label">Win Rate</div></div>
+        <div class="stat-card"><span class="stat-number" id="skillLevel">8.5</span><div class="stat-label">Skill Level</div></div>
+        <div class="stat-card"><span class="stat-number" id="hoursPlayed">89</span><div class="stat-label">Hours Played</div></div>
+      </div>
+    </div>
+  </section>
 
-        // Acey's motivational messages
-        const motivationalMessages = [
-            "Great job! Keep swinging for the stars! 🎾⭐",
-            "You're improving every day! Acey believes in you! 💪",
-            "Tennis champions are made with practice and passion! 🏆",
-            "Serve your dreams and volley your goals! 🎯",
-            "Every great player started with a single swing! 🌟",
-            "Game, Set, Match your potential! You've got this! 🔥",
-            "Ace your way to success! Keep up the fantastic work! ⚡",
-            "The court is your canvas, paint it with victory! 🎨"
-        ];
+  <!-- ---------------- OBJECTIVE TRACKER ---------------- -->
+  <section class="section" id="tracker">
+    <h2 class="section-title">Objective Tracker</h2>
+    <div class="tracker-container">
+      <div class="form-row">
+        <select id="prioritySelect">
+          <option value="1">Prioridad 1 (Alta)</option>
+          <option value="2">Prioridad 2 (Media)</option>
+          <option value="3">Prioridad 3 (Baja)</option>
+        </select>
+        <select id="urgencySelect">
+          <option value="+">Urgencia + (Baja)</option>
+          <option value="++">Urgencia ++ (Media)</option>
+          <option value="+++">Urgencia +++ (Alta)</option>
+        </select>
+        <button onclick="addObjective()">➕ Añadir Objetivo</button>
+      </div>
+      <div id="objectiveList"></div>
+    </div>
+  </section>
 
-        // Start button functionality
-        document.getElementById('startBtn').addEventListener('click', () => {
-            showAceyMessage();
-            updateProgress();
-        });
+  <!-- ---------------- FOOTER ---------------- -->
+  <footer class="footer"><p>&copy; 2024 CH Tennis Academy. All rights reserved. Powered by Acey!</p></footer>
 
-        // Acey mascot click functionality
-        document.getElementById('aceyMascot').addEventListener('click', () => {
-            showAceyMessage();
-            // Add extra bounce animation
-            document.getElementById('aceyMascot').style.animation = 'bounce 0.5s ease-in-out';
-            setTimeout(() => {
-                document.getElementById('aceyMascot').style.animation = 'bounce 2s infinite';
-            }, 500);
-        });
+  <!-- ---------------- MOTIVATIONAL POPUP ---------------- -->
+  <div class="acey-message" id="aceyMessage"><button class="message-close" onclick="closeMessage()">&times;</button><div id="messageText"></div></div>
 
-        // Show motivational message
-        function showAceyMessage() {
-            const messageElement = document.getElementById('aceyMessage');
-            const messageText = document.getElementById('messageText');
-            const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-            
-            messageText.innerHTML = randomMessage;
-            messageElement.style.display = 'block';
-            
-            // Auto-close after 4 seconds
-            setTimeout(() => {
-                closeMessage();
-            }, 4000);
-        }
+  <!-- ---------------- SCRIPTS ---------------- -->
+  <script>
+    /* ----- Mobile Menu Toggle ----- */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    mobileMenuBtn.addEventListener('click',()=> navMenu.classList.toggle('active'));
 
-        // Close message
-        function closeMessage() {
-            document.getElementById('aceyMessage').style.display = 'none';
-        }
+    /* ----- Smooth scroll for menu links ----- */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener('click',e=>{e.preventDefault();const target=document.querySelector(anchor.getAttribute('href'));if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}navMenu.classList.remove('active');});});
 
-        // Challenge completion simulation
-        function completeChallenge(card, challengeType) {
-            const progressBar = card.querySelector('.progress-bar');
-            const currentWidth = parseInt(progressBar.style.width);
-            
-            if (currentWidth < 100) {
-                const newWidth = Math.min(currentWidth + 10, 100);
-                progressBar.style.width = newWidth + '%';
-                
-                // Update text based on challenge type
-                updateChallengeText(card, challengeType, newWidth);
-                
-                if (newWidth === 100) {
-                    card.style.background = 'linear-gradient(135deg, rgba(0, 255, 65, 0.3), rgba(16, 185, 129, 0.3))';
-                    showAceyMessage();
-                }
-            }
-        }
+    /* ----- Motivational Messages ----- */
+    const motivationalMessages=["Great job! Keep swinging for the stars! 🎾⭐","You're improving every day! Acey believes in you! 💪","Tennis champions are made with practice and passion! 🏆","Serve your dreams and volley your goals! 🎯","Every great player started with a single swing! 🌟","Game, Set, Match your potential! You've got this! 🔥","Ace your way to success! Keep up the fantastic work! ⚡","The court is your canvas, paint it with victory! 🎨"];
+    function showAceyMessage(){const msg=document.getElementById('aceyMessage');const txt=document.getElementById('messageText');txt.innerHTML=motivationalMessages[Math.floor(Math.random()*motivationalMessages.length)];msg.style.display='block';setTimeout(closeMessage,4000);}function closeMessage(){document.getElementById('aceyMessage').style.display='none';}
 
-        // Update challenge text
-        function updateChallengeText(card, challengeType, progress) {
-            const textElement = card.querySelector('p:last-child');
-            let completed, total;
-            
-            switch(challengeType) {
-                case 'serve':
-                    total = 10;
-                    completed = Math.floor((progress / 100) * total);
-                    textElement.textContent = `${completed}/${total} completed`;
-                    break;
-                case 'rally':
-                    total = 20;
-                    completed = Math.floor((progress / 100) * total);
-                    textElement.textContent = `${completed}/${total} completed`;
-                    break;
-                case 'target':
-                    total = 5;
-                    completed = Math.floor((progress / 100) * total);
-                    textElement.textContent = `${completed}/${total} completed`;
-                    break;
-                case 'endurance':
-                    total = 30;
-                    completed = Math.floor((progress / 100) * total);
-                    textElement.textContent = `${completed}/${total} minutes`;
-                    break;
-            }
-        }
+    document.getElementById('startBtn').addEventListener('click',()=>{showAceyMessage();updateProgress();});
+    document.getElementById('aceyMascot').addEventListener('click',()=>{showAceyMessage();const mascot=document.getElementById('aceyMascot');mascot.style.animation='bounce 0.5s ease-in-out';setTimeout(()=>{mascot.style.animation='bounce 2s infinite';},500);});
 
-        // Simulate leaderboard functionality
-        function displayLeaderboard() {
-            const leaderboardData = [
-                { name: "Alex Champion", score: 2450, rank: 1 },
-                { name: "Sarah Ace", score: 2380, rank: 2 },
-                { name: "Mike Volley", score: 2290, rank: 3 },
-                { name: "You", score: 2150, rank: 4 },
-                { name: "Emma Serve", score: 2100, rank: 5 }
-            ];
-            
-            console.log("Current Leaderboard:", leaderboardData);
-            return leaderboardData;
-        }
+    /* ----- Challenge Cards Interaction ----- */
+    function completeChallenge(card,type){const bar=card.querySelector('.progress-bar');let width=parseInt(bar.style.width);if(width<100){width=Math.min(width+10,100);bar.style.width=width+'%';updateChallengeText(card,type,width);if(width===100){card.style.background='linear-gradient(135deg,rgba(0,255,65,0.3),rgba(16,185,129,0.3))';showAceyMessage();}}}
+    function updateChallengeText(card,type,progress){const p=card.querySelector('p:last-child');let total=10;if(type==='rally') total=20; else if(type==='target') total=5; else if(type==='endurance') total=30;const done=Math.floor(progress/100*total);p.textContent=type==='endurance'?`${done}/${total} minutes`:`${done}/${total} completed`;}
 
-        // Progress tracking functionality
-        function updateProgress() {
-            // Simulate progress updates
-            const gamesElement = document.getElementById('gamesPlayed');
-            const currentGames = parseInt(gamesElement.textContent);
-            gamesElement.textContent = currentGames + 1;
-            
-            // Update hours played
-            const hoursElement = document.getElementById('hoursPlayed');
-            const currentHours = parseInt(hoursElement.textContent);
-            if (Math.random() > 0.7) { // 30% chance to increment hours
-                hoursElement.textContent = currentHours + 1;
-            }
-            
-            // Update skill level slightly
-            const skillElement = document.getElementById('skillLevel');
-            const currentSkill = parseFloat(skillElement.textContent);
-            const newSkill = Math.min(currentSkill + 0.1, 10.0);
-            skillElement.textContent = newSkill.toFixed(1);
-        }
+    /* ----- Stats Simulation ----- */
+    function updateProgress(){const games=document.getElementById('gamesPlayed');games.textContent=parseInt(games.textContent)+1;const hours=document.getElementById('hoursPlayed');if(Math.random()>0.7) hours.textContent=parseInt(hours.textContent)+1;const skill=document.getElementById('skillLevel');skill.textContent=(Math.min(parseFloat(skill.textContent)+0.1,10)).toFixed(1);}
 
-        // Initialize challenges system
-        function initializeChallenges() {
-            const challenges = {
-                daily: [
-                    { name: "Morning Warm-up", completed: false, points: 50 },
-                    { name: "Practice Serve", completed: true, points: 75 },
-                    { name: "Footwork Drill", completed: false, points: 60 }
-                ],
-                weekly: [
-                    { name: "Win 5 Matches", completed: false, points: 200 },
-                    { name: "Complete All Daily Challenges", completed: false, points: 300 }
-                ]
-            };
-            
-            console.log("Challenges initialized:", challenges);
-            return challenges;
-        }
+    /* ----- Objective Tracker Logic ----- */
+    const stateOrder={"En Progreso":1,Pendiente:2,Completado:3};
+    let objectives=[];
+    function getProgress(estado){if(estado==='Completado') return 100; if(estado==='En Progreso') return 50; return 10;}
+    function renderObjectives(){const list=document.getElementById('objectiveList');list.innerHTML='';const sorted=[...objectives].sort((a,b)=>{const diff=a.priority-b.priority;return diff!==0?diff:stateOrder[a.estado]-stateOrder[b.estado];});sorted.forEach(obj=>{const card=document.createElement('div');card.className='objective-card';card.innerHTML=`<div class="objective-title">${obj.titulo}</div><div class="objective-details"><div>🎯 Prioridad: ${obj.priority}</div><div>⚡ Urgencia: ${obj.urgency}</div><div>Estado: <select onchange="changeEstado(${obj.id},this.value)"><option ${obj.estado==='Pendiente'?'selected':''}>Pendiente</option><option ${obj.estado==='En Progreso'?'selected':''}>En Progreso</option><option ${obj.estado==='Completado'?'selected':''}>Completado</option></select></div><button onclick="removeObjective(${obj.id})">🗑 Eliminar</button></div><div class="progress-bar small"><div class="progress small" style="width:${getProgress(obj.estado)}%"></div></div>`;list.appendChild(card);});}
+    function addObjective(){const priority=document.getElementById('prioritySelect').value;const urgency=document.getElementById('urgencySelect').value;const id=Date.now();objectives.push({id,titulo:`Objetivo ${id}`,priority,urgency,estado:'Pendiente'});renderObjectives();}
+    function changeEstado(id,estado){const obj=objectives.find(o=>o.id===id);if(obj){obj.estado=estado;renderObjectives();}}
+    function removeObjective(id){objectives=objectives.filter(o=>o.id!==id);renderObjectives();}
 
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(10, 24, 41, 0.98)';
-            } else {
-                header.style.background = 'rgba(10, 24, 41, 0.95)';
-            }
-        });
+    /* ----- Header scroll transparency ----- */
+    window.addEventListener('scroll',()=>{document.querySelector('.header').style.background=window.scrollY>100?'rgba(10,24,41,0.98)':'rgba(10,24,41,0.95)';});
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeChallenges();
-            displayLeaderboard();
-            
-            // Add some dynamic effects
-            setTimeout(() => {
-                console.log("CH Tennis Academy - Gamification system loaded!");
-            }, 1000);
-        });
+    /* ----- Init on DOM ready ----- */
+    document.addEventListener('DOMContentLoaded',()=>{console.log('CH Tennis Academy - unified app loaded');renderObjectives();});
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeMessage();
-                navMenu.classList.remove('active');
-            }
-            if (e.key === ' ' && e.ctrlKey) {
-                e.preventDefault();
-                showAceyMessage();
-            }
-        });
-    </script>
+    /* ----- Keyboard shortcuts ----- */
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMessage();navMenu.classList.remove('active');} if(e.key===' '&&e.ctrlKey){e.preventDefault();showAceyMessage();}});
+  </script>
 </body>
 </html>
